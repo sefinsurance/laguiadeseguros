@@ -1,13 +1,19 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import {
   ArrowRight,
   BadgeCheck,
+  BookOpen,
+  BriefcaseBusiness,
+  Building2,
   Car,
   Check,
   ChevronDown,
+  FileQuestion,
+  Globe2,
   HeartPulse,
   Home,
   Languages,
+  MapPinned,
   Menu,
   Phone,
   Shield,
@@ -18,198 +24,40 @@ import {
   Umbrella,
   X,
 } from "lucide-react";
+import {
+  contactOptions,
+  languages,
+  marketStates,
+  services,
+  site,
+  sourceLinks,
+  stateOptions,
+} from "./content";
 
-const PHONE_DISPLAY = "877-458-2557";
-const PHONE_TEL = "+18774582557";
-const WHATSAPP_URL = "https://wa.me/18774582557";
-
-const copy = {
-  es: {
-    nav: ["Coberturas", "Proceso", "Consulta"],
-    navCta: "Cotizar ahora",
-    heroBadge: "Guia bilingue de seguros",
-    heroTitle: "Seguros claros para proteger lo que mas importa.",
-    heroText:
-      "Compara opciones de Auto, Salud, Medicare, Vida, Dental y Hogar con ayuda de asesores que hablan tu idioma.",
-    heroCta: "Empezar mi guia",
-    heroSecondary: "Llamar ahora",
-    proof: ["Consulta sin costo", "Atencion en espanol e ingles", "Respuesta rapida"],
-    formTitle: "Recibe orientacion personalizada",
-    formText: "Completa tus datos y un asesor de MLC revisara tus opciones.",
-    servicesTitle: "Elige la cobertura que necesitas",
-    servicesText: "Cada guia esta pensada para hacer preguntas simples y llevar tu informacion directo al equipo correcto.",
-    processTitle: "Como funciona",
-    finalCta: "Listo para revisar tus opciones?",
-    finalText: "Deja tus datos y convierte la busqueda de seguro en una conversacion clara.",
-    submit: "Enviar solicitud",
-    sending: "Enviando...",
-    success: "Solicitud recibida. Un asesor te contactara pronto.",
-    error: "No pudimos enviar la solicitud. Intenta nuevamente o llama al 877-458-2557.",
-    consent:
-      "Acepto que MLC me contacte por telefono, SMS o email sobre mi solicitud. Pueden aplicar tarifas de mensajes y datos.",
-    fields: {
-      fullName: "Nombre completo",
-      phone: "Telefono",
-      email: "Email",
-      insuranceType: "Tipo de seguro",
-      city: "Ciudad",
-      state: "Estado",
-      zipCode: "Codigo postal",
-      preferredContact: "Preferencia de contacto",
-      householdSize: "Personas en el hogar",
-      currentCoverage: "Cobertura actual",
-      message: "Que necesitas resolver?",
-    },
-  },
-  en: {
-    nav: ["Coverage", "Process", "Consultation"],
-    navCta: "Start quote",
-    heroBadge: "Bilingual insurance guide",
-    heroTitle: "Clear insurance guidance for what matters most.",
-    heroText:
-      "Compare Auto, Health, Medicare, Life, Dental, and Home insurance options with advisors who speak your language.",
-    heroCta: "Start my guide",
-    heroSecondary: "Call now",
-    proof: ["No-cost consultation", "English and Spanish support", "Fast response"],
-    formTitle: "Get personalized guidance",
-    formText: "Share your details and an MLC advisor will review your options.",
-    servicesTitle: "Choose the coverage you need",
-    servicesText: "Each guide asks simple questions and routes your information to the right team.",
-    processTitle: "How it works",
-    finalCta: "Ready to review your options?",
-    finalText: "Leave your details and turn insurance shopping into a clear conversation.",
-    submit: "Send request",
-    sending: "Sending...",
-    success: "Request received. An advisor will contact you soon.",
-    error: "We could not send the request. Try again or call 877-458-2557.",
-    consent:
-      "I agree that MLC may contact me by phone, SMS, or email about my request. Message and data rates may apply.",
-    fields: {
-      fullName: "Full name",
-      phone: "Phone",
-      email: "Email",
-      insuranceType: "Insurance type",
-      city: "City",
-      state: "State",
-      zipCode: "ZIP code",
-      preferredContact: "Contact preference",
-      householdSize: "Household size",
-      currentCoverage: "Current coverage",
-      message: "What do you need help with?",
-    },
-  },
+const serviceIcons = {
+  auto: Car,
+  health: HeartPulse,
+  medicare: Stethoscope,
+  life: Umbrella,
+  dental: Smile,
+  home: Home,
 };
 
-const services = [
-  {
-    id: "auto",
-    icon: Car,
-    image: "/images/auto.png",
-    es: {
-      title: "Seguro de Auto",
-      summary: "Proteccion para manejar con confianza, desde cobertura basica hasta proteccion completa.",
-      points: ["Responsabilidad civil", "Full cover", "Conductores y vehiculos multiples"],
-    },
-    en: {
-      title: "Auto Insurance",
-      summary: "Protection for the road, from basic liability to full coverage.",
-      points: ["Liability", "Full coverage", "Multiple drivers and vehicles"],
-    },
-  },
-  {
-    id: "health",
-    icon: HeartPulse,
-    image: "/images/health.png",
-    es: {
-      title: "Seguro de Salud",
-      summary: "Opciones para individuos y familias con enfoque en doctores, medicinas y presupuesto.",
-      points: ["Planes ACA", "Familias", "Ayuda con subsidios"],
-    },
-    en: {
-      title: "Health Insurance",
-      summary: "Individual and family options centered on doctors, prescriptions, and budget.",
-      points: ["ACA plans", "Families", "Subsidy guidance"],
-    },
-  },
-  {
-    id: "medicare",
-    icon: Stethoscope,
-    image: "/images/medicare.png",
-    es: {
-      title: "Medicare",
-      summary: "Orientacion para Medicare Advantage, suplementos y Parte D sin confusiones.",
-      points: ["Turning 65", "Advantage", "Part D"],
-    },
-    en: {
-      title: "Medicare",
-      summary: "Guidance for Medicare Advantage, supplements, and Part D without confusion.",
-      points: ["Turning 65", "Advantage", "Part D"],
-    },
-  },
-  {
-    id: "life",
-    icon: Umbrella,
-    image: "/images/life.png",
-    es: {
-      title: "Seguro de Vida",
-      summary: "Ayuda para proteger ingresos, familia y planes futuros con cobertura adecuada.",
-      points: ["Term life", "Whole life", "Proteccion familiar"],
-    },
-    en: {
-      title: "Life Insurance",
-      summary: "Help protecting income, family, and future plans with the right coverage.",
-      points: ["Term life", "Whole life", "Family protection"],
-    },
-  },
-  {
-    id: "dental",
-    icon: Smile,
-    image: "/images/dental.png",
-    es: {
-      title: "Seguro Dental",
-      summary: "Planes para limpiezas, tratamientos mayores, ortodoncia y redes dentales.",
-      points: ["Preventivo", "Tratamientos mayores", "Familias"],
-    },
-    en: {
-      title: "Dental Insurance",
-      summary: "Plans for cleanings, major work, orthodontics, and dentist networks.",
-      points: ["Preventive", "Major work", "Families"],
-    },
-  },
-  {
-    id: "home",
-    icon: Home,
-    image: "/images/home.png",
-    es: {
-      title: "Seguro de Hogar",
-      summary: "Cobertura para casa, pertenencias y responsabilidad ante eventos inesperados.",
-      points: ["Casa", "Condo", "Flood review"],
-    },
-    en: {
-      title: "Home Insurance",
-      summary: "Coverage for your house, belongings, and liability when the unexpected happens.",
-      points: ["House", "Condo", "Flood review"],
-    },
-  },
-];
+const pageTypeMeta = {
+  guide: { icon: BookOpen, es: "Guia", en: "Guide" },
+  faq: { icon: FileQuestion, es: "FAQ", en: "FAQ" },
+  types: { icon: BriefcaseBusiness, es: "Tipos de polizas", en: "Policy types" },
+  availability: { icon: MapPinned, es: "Disponibilidad", en: "Availability" },
+};
 
-const contactOptions = [
-  ["phone", "Phone / Llamada"],
-  ["sms", "SMS"],
-  ["whatsapp", "WhatsApp"],
-  ["email", "Email"],
-];
-
-const states = ["AZ", "FL", "TX", "NC", "GA", "CA", "NV", "Other"];
-
-function initialForm() {
+function initialForm(insuranceType = "health") {
   return {
     fullName: "",
     phone: "",
     email: "",
-    insuranceType: "health",
+    insuranceType,
     city: "",
-    state: "AZ",
+    state: "FL",
     zipCode: "",
     preferredContact: "phone",
     householdSize: "",
@@ -229,19 +77,214 @@ function getUtm() {
   );
 }
 
+function pageUrl(path) {
+  return `${site.url}${path === "/" ? "/" : path}`;
+}
+
+function routeForPath(pathname) {
+  const path = pathname.replace(/\/+$/, "") || "/";
+  if (path === "/") return { type: "home", path };
+
+  for (const service of services) {
+    const base = `/${service.slug}`;
+    const faq = `/${service.id === "medicare" ? "medicare" : `${service.id}-insurance`}-faq`;
+    const types = `/${service.id === "medicare" ? "medicare" : `${service.id}-insurance`}-types`;
+    const availability = `/${service.id === "medicare" ? "medicare" : `${service.id}-insurance`}-availability`;
+    if (path === base) return { type: "guide", service, path };
+    if (path === faq) return { type: "faq", service, path };
+    if (path === types) return { type: "types", service, path };
+    if (path === availability) return { type: "availability", service, path };
+  }
+
+  return { type: "home", path: "/" };
+}
+
+function servicePaths(service) {
+  const stem = service.id === "medicare" ? "medicare" : `${service.id}-insurance`;
+  return {
+    guide: `/${service.slug}`,
+    faq: `/${stem}-faq`,
+    types: `/${stem}-types`,
+    availability: `/${stem}-availability`,
+  };
+}
+
+function setMeta(name, value, attr = "name") {
+  if (!value) return;
+  let el = document.head.querySelector(`meta[${attr}="${name}"]`);
+  if (!el) {
+    el = document.createElement("meta");
+    el.setAttribute(attr, name);
+    document.head.appendChild(el);
+  }
+  el.setAttribute("content", value);
+}
+
+function setCanonical(url) {
+  let link = document.head.querySelector('link[rel="canonical"]');
+  if (!link) {
+    link = document.createElement("link");
+    link.setAttribute("rel", "canonical");
+    document.head.appendChild(link);
+  }
+  link.setAttribute("href", url);
+}
+
+function JsonLd({ data }) {
+  return (
+    <script
+      type="application/ld+json"
+      dangerouslySetInnerHTML={{ __html: JSON.stringify(data).replace(/</g, "\\u003c") }}
+    />
+  );
+}
+
+function useSeo(route, lang) {
+  useEffect(() => {
+    const l = languages[lang];
+    const local = route.service?.[lang];
+    const title =
+      route.type === "home"
+        ? lang === "es"
+          ? "La Guia de Seguros | Guias bilingues de Auto, Salud, Medicare, Vida, Dental y Hogar"
+          : "La Guia de Seguros | Bilingual Auto, Health, Medicare, Life, Dental and Home Guides"
+        : route.type === "guide"
+          ? local.seoTitle
+          : `${local.title} ${pageTypeMeta[route.type][lang]} | La Guia de Seguros`;
+    const description =
+      route.type === "home"
+        ? l.hero.text
+        : route.type === "faq"
+          ? `${local.title} FAQ: ${local.faqs.map(([q]) => q).slice(0, 3).join(", ")}.`
+          : route.type === "types"
+            ? `${local.title} policy types explained in English and Spanish: ${local.policyTypes.map(([name]) => name).join(", ")}.`
+            : route.type === "availability"
+              ? `${local.title} availability guidance for Hispanic hub states and counties including ${marketStates.slice(0, 4).map((s) => s.state).join(", ")}.`
+              : local.description;
+
+    const canonical = pageUrl(route.path);
+    document.title = title;
+    setMeta("description", description);
+    setMeta("robots", "index, follow, max-image-preview:large, max-snippet:-1");
+    setMeta("author", site.legalName);
+    setMeta("keywords", "insurance guide, bilingual insurance, seguro de auto, seguro de hogar, seguro de vida, Medicare, health insurance, Hispanic insurance agents, MLC Insurance Agency");
+    setMeta("og:title", title, "property");
+    setMeta("og:description", description, "property");
+    setMeta("og:type", route.type === "home" ? "website" : "article", "property");
+    setMeta("og:url", canonical, "property");
+    setMeta("og:image", `${site.url}${route.service?.image || "/images/health.png"}`, "property");
+    setMeta("twitter:card", "summary_large_image");
+    setMeta("twitter:title", title);
+    setMeta("twitter:description", description);
+    setCanonical(canonical);
+  }, [route, lang]);
+}
+
+function buildJsonLd(route, lang) {
+  const l = languages[lang];
+  const base = [
+    {
+      "@context": "https://schema.org",
+      "@type": "InsuranceAgency",
+      name: site.name,
+      legalName: site.legalName,
+      url: site.url,
+      telephone: site.phoneDisplay,
+      areaServed: marketStates.map((s) => ({ "@type": "State", name: s.state })),
+      sameAs: [site.chronos],
+      knowsAbout: services.map((service) => service.en.title),
+      availableLanguage: ["Spanish", "English"],
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      name: site.name,
+      url: site.url,
+      inLanguage: ["es-US", "en-US"],
+      potentialAction: {
+        "@type": "ContactAction",
+        target: `${site.url}/#lead-form`,
+        name: l.navCta,
+      },
+    },
+  ];
+
+  if (!route.service) return base;
+  const local = route.service[lang];
+  const paths = servicePaths(route.service);
+  base.push({
+    "@context": "https://schema.org",
+    "@type": "Article",
+    headline: route.type === "guide" ? local.seoTitle : `${local.title} ${pageTypeMeta[route.type][lang]}`,
+    description: local.description,
+    image: `${site.url}${route.service.image}`,
+    mainEntityOfPage: pageUrl(route.path),
+    author: { "@type": "Organization", name: site.legalName },
+    publisher: { "@type": "Organization", name: site.name, url: site.url },
+    about: local.title,
+    inLanguage: lang === "es" ? "es-US" : "en-US",
+  });
+  base.push({
+    "@context": "https://schema.org",
+    "@type": "Service",
+    name: local.title,
+    serviceType: local.title,
+    provider: { "@type": "InsuranceAgency", name: site.legalName, url: site.url },
+    areaServed: marketStates.map((s) => s.state),
+    url: pageUrl(paths.guide),
+  });
+  base.push({
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: local.faqs.map(([question, answer]) => ({
+      "@type": "Question",
+      name: question,
+      acceptedAnswer: { "@type": "Answer", text: answer },
+    })),
+  });
+  return base;
+}
+
 function App() {
   const [lang, setLang] = useState("es");
   const [menuOpen, setMenuOpen] = useState(false);
+  const [route, setRoute] = useState(() => routeForPath(window.location.pathname));
   const [form, setForm] = useState(initialForm);
   const [status, setStatus] = useState("idle");
   const [message, setMessage] = useState("");
-  const t = copy[lang];
+  const t = languages[lang];
+
+  useEffect(() => {
+    const onPop = () => setRoute(routeForPath(window.location.pathname));
+    window.addEventListener("popstate", onPop);
+    return () => window.removeEventListener("popstate", onPop);
+  }, []);
+
+  useEffect(() => {
+    if (!route.service) return;
+    setForm((current) =>
+      current.insuranceType === route.service.id
+        ? current
+        : { ...current, insuranceType: route.service.id }
+    );
+  }, [route.service?.id]);
+
+  useSeo(route, lang);
 
   const selectedService = useMemo(
     () => services.find((service) => service.id === form.insuranceType) || services[0],
     [form.insuranceType]
   );
-  const SelectedIcon = selectedService.icon;
+
+  function navigate(event, href) {
+    if (href.includes("#")) return;
+    if (!href.startsWith("/")) return;
+    event.preventDefault();
+    window.history.pushState({}, "", href);
+    setRoute(routeForPath(href));
+    setMenuOpen(false);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }
 
   function update(key, value) {
     setForm((current) => ({ ...current, [key]: value }));
@@ -273,8 +316,8 @@ function App() {
       if (!response.ok) throw new Error("Lead request failed");
       setStatus("success");
       setMessage(t.success);
-      setForm(initialForm());
-    } catch (error) {
+      setForm(initialForm(route.service?.id));
+    } catch {
       setStatus("error");
       setMessage(t.error);
     }
@@ -282,284 +325,608 @@ function App() {
 
   return (
     <div className="site-shell">
-      <header className="topbar">
-        <a className="brand" href="#top" aria-label="La Guia de Seguros home">
-          <span className="brand-mark">
-            <ShieldCheck size={22} />
-          </span>
-          <span>
-            <strong>La Guía</strong>
-            <small>de Seguros</small>
-          </span>
+      {buildJsonLd(route, lang).map((data, index) => (
+        <JsonLd data={data} key={index} />
+      ))}
+      <Header
+        lang={lang}
+        setLang={setLang}
+        menuOpen={menuOpen}
+        setMenuOpen={setMenuOpen}
+        navigate={navigate}
+      />
+      <main id="top">
+        {route.type === "home" ? (
+          <HomePage lang={lang} chooseService={chooseService} navigate={navigate} />
+        ) : (
+          <ServicePage lang={lang} route={route} chooseService={chooseService} navigate={navigate} />
+        )}
+        <LeadSection
+          lang={lang}
+          form={form}
+          status={status}
+          message={message}
+          update={update}
+          handleSubmit={handleSubmit}
+          selectedService={selectedService}
+        />
+        <FinalBand lang={lang} />
+      </main>
+      <Footer navigate={navigate} />
+    </div>
+  );
+}
+
+function Header({ lang, setLang, menuOpen, setMenuOpen, navigate }) {
+  const t = languages[lang];
+  const navItems = [
+    ["/#coverage", t.nav[0]],
+    ["/#guides", t.nav[1]],
+    ["/#states", t.nav[2]],
+    ["/#lead-form", t.nav[3]],
+  ];
+  return (
+    <header className="topbar">
+      <a className="brand" href="/" onClick={(event) => navigate(event, "/")} aria-label="La Guia de Seguros home">
+        <img className="brand-logo" src="/logo-laguiadeseguros.png" alt="" />
+        <span>
+          <strong>La Guía</strong>
+          <small>de Seguros</small>
+        </span>
+      </a>
+
+      <nav className="desktop-nav" aria-label="Main navigation">
+        {navItems.map(([href, label]) => (
+          <a href={href} key={href}>{label}</a>
+        ))}
+      </nav>
+
+      <div className="nav-actions">
+        <button className="lang-toggle" type="button" onClick={() => setLang(lang === "es" ? "en" : "es")}>
+          <Languages size={16} />
+          {t.switchTo}
+        </button>
+        <a className="phone-link" href={`tel:${site.phoneTel}`}>
+          <Phone size={16} />
+          {site.phoneDisplay}
         </a>
-
-        <nav className="desktop-nav" aria-label="Main navigation">
-          <a href="#coverage">{t.nav[0]}</a>
-          <a href="#process">{t.nav[1]}</a>
-          <a href="#lead-form">{t.nav[2]}</a>
-        </nav>
-
-        <div className="nav-actions">
-          <button className="lang-toggle" type="button" onClick={() => setLang(lang === "es" ? "en" : "es")}>
-            <Languages size={16} />
-            {lang === "es" ? "EN" : "ES"}
-          </button>
-          <a className="phone-link" href={`tel:${PHONE_TEL}`}>
-            <Phone size={16} />
-            {PHONE_DISPLAY}
-          </a>
-          <a className="primary small" href="#lead-form">
-            {t.navCta}
-          </a>
-          <button className="menu-button" type="button" onClick={() => setMenuOpen(true)} aria-label="Open menu">
-            <Menu size={22} />
-          </button>
-        </div>
-      </header>
+        <a className="primary small" href="#lead-form">
+          {t.navCta}
+        </a>
+        <button className="menu-button" type="button" onClick={() => setMenuOpen(true)} aria-label="Open menu">
+          <Menu size={22} />
+        </button>
+      </div>
 
       {menuOpen && (
         <div className="mobile-menu" role="dialog" aria-modal="true">
           <button className="menu-close" type="button" onClick={() => setMenuOpen(false)} aria-label="Close menu">
             <X size={22} />
           </button>
-          <a onClick={() => setMenuOpen(false)} href="#coverage">{t.nav[0]}</a>
-          <a onClick={() => setMenuOpen(false)} href="#process">{t.nav[1]}</a>
-          <a onClick={() => setMenuOpen(false)} href="#lead-form">{t.nav[2]}</a>
-          <a onClick={() => setMenuOpen(false)} href={`tel:${PHONE_TEL}`}>{PHONE_DISPLAY}</a>
+          {navItems.map(([href, label]) => (
+            <a key={href} onClick={() => setMenuOpen(false)} href={href}>{label}</a>
+          ))}
+          <a onClick={() => setMenuOpen(false)} href={`tel:${site.phoneTel}`}>{site.phoneDisplay}</a>
+          <a onClick={() => setMenuOpen(false)} href={site.chronosLogin}>Agent Login</a>
         </div>
       )}
+    </header>
+  );
+}
 
-      <main id="top">
-        <section className="hero">
-          <div className="hero-media" aria-hidden="true">
-            <img className="hero-main-img" src="/images/health.png" alt="" />
-            <img className="hero-float hero-float-one" src="/images/auto.png" alt="" />
-            <img className="hero-float hero-float-two" src="/images/home.png" alt="" />
+function HomePage({ lang, chooseService, navigate }) {
+  const t = languages[lang];
+  return (
+    <>
+      <section className="hero">
+        <div className="hero-media" aria-hidden="true">
+          <img className="hero-main-img" src="/images/health.png" alt="" />
+          <img className="hero-float hero-float-one" src="/images/auto.png" alt="" />
+          <img className="hero-float hero-float-two" src="/images/home.png" alt="" />
+        </div>
+        <div className="hero-copy">
+          <div className="eyebrow">
+            <Sparkles size={16} />
+            {t.hero.badge}
           </div>
-
-          <div className="hero-copy">
-            <div className="eyebrow">
-              <Sparkles size={16} />
-              {t.heroBadge}
-            </div>
-            <h1>{t.heroTitle}</h1>
-            <p>{t.heroText}</p>
-            <div className="hero-actions">
-              <a className="primary" href="#lead-form">
-                {t.heroCta}
-                <ArrowRight size={18} />
-              </a>
-              <a className="secondary" href={`tel:${PHONE_TEL}`}>
-                <Phone size={18} />
-                {t.heroSecondary}
-              </a>
-            </div>
-            <div className="proof-row">
-              {t.proof.map((item) => (
-                <span key={item}>
-                  <Check size={16} />
-                  {item}
-                </span>
-              ))}
-            </div>
+          <h1>{t.hero.title}</h1>
+          <p>{t.hero.text}</p>
+          <div className="hero-actions">
+            <a className="primary" href="#lead-form">
+              {t.hero.cta}
+              <ArrowRight size={18} />
+            </a>
+            <a className="secondary" href="#guides">
+              <BookOpen size={18} />
+              {t.hero.secondary}
+            </a>
           </div>
-        </section>
-
-        <section className="coverage-band" id="coverage">
-          <div className="section-heading">
-            <span className="section-kicker">Auto - Health - Medicare - Life - Dental - Home</span>
-            <h2>{t.servicesTitle}</h2>
-            <p>{t.servicesText}</p>
-          </div>
-
-          <div className="service-grid">
-            {services.map((service) => {
-              const Icon = service.icon;
-              const local = service[lang];
-              return (
-                <article className="service-card" key={service.id}>
-                  <img src={service.image} alt={local.title} />
-                  <div className="service-body">
-                    <div className="service-icon">
-                      <Icon size={22} />
-                    </div>
-                    <h3>{local.title}</h3>
-                    <p>{local.summary}</p>
-                    <ul>
-                      {local.points.map((point) => (
-                        <li key={point}>
-                          <BadgeCheck size={15} />
-                          {point}
-                        </li>
-                      ))}
-                    </ul>
-                    <button type="button" onClick={() => chooseService(service.id)}>
-                      {lang === "es" ? "Quiero esta guia" : "Use this guide"}
-                      <ArrowRight size={16} />
-                    </button>
-                  </div>
-                </article>
-              );
-            })}
-          </div>
-        </section>
-
-        <section className="process" id="process">
-          <div className="section-heading compact">
-            <span className="section-kicker">MLC lead routing</span>
-            <h2>{t.processTitle}</h2>
-          </div>
-          <div className="steps">
-            {[
-              lang === "es" ? "Elige la cobertura" : "Choose coverage",
-              lang === "es" ? "Comparte tus datos" : "Share your details",
-              lang === "es" ? "Un asesor revisa opciones" : "An advisor reviews options",
-            ].map((step, index) => (
-              <div className="step" key={step}>
-                <span>{index + 1}</span>
-                <h3>{step}</h3>
-                <p>
-                  {lang === "es"
-                    ? "Tu solicitud llega organizada al CRM para seguimiento rapido."
-                    : "Your request arrives organized in the CRM for quick follow-up."}
-                </p>
-              </div>
+          <div className="proof-row">
+            {t.hero.proof.map((item) => (
+              <span key={item}>
+                <Check size={16} />
+                {item}
+              </span>
             ))}
           </div>
-        </section>
+        </div>
+      </section>
 
-        <section className="lead-section" id="lead-form">
-          <div className="lead-copy">
-            <div className="selected-guide">
-              <SelectedIcon size={22} />
-              {selectedService[lang].title}
-            </div>
-            <h2>{t.formTitle}</h2>
-            <p>{t.formText}</p>
-            <div className="contact-strip">
-              <a href={`tel:${PHONE_TEL}`}>
-                <Phone size={17} />
-                {PHONE_DISPLAY}
-              </a>
-              <a href={WHATSAPP_URL} target="_blank" rel="noreferrer">
-                WhatsApp
-              </a>
-            </div>
-          </div>
+      <section className="coverage-band" id="coverage">
+        <div className="section-heading">
+          <span className="section-kicker">Auto - Health - Medicare - Life - Dental - Home</span>
+          <h2>{t.sections.coverageTitle}</h2>
+          <p>{t.sections.coverageText}</p>
+        </div>
+        <ServiceGrid lang={lang} chooseService={chooseService} navigate={navigate} />
+      </section>
 
-          <form className="lead-form" onSubmit={handleSubmit}>
-            <label className="hidden-field">
-              Company
-              <input value={form.company} onChange={(event) => update("company", event.target.value)} tabIndex="-1" autoComplete="off" />
-            </label>
-
-            <div className="field wide">
-              <label htmlFor="insuranceType">{t.fields.insuranceType}</label>
-              <div className="select-wrap">
-                <select id="insuranceType" value={form.insuranceType} onChange={(event) => update("insuranceType", event.target.value)}>
-                  {services.map((service) => (
-                    <option value={service.id} key={service.id}>
-                      {service[lang].title}
-                    </option>
-                  ))}
-                </select>
-                <ChevronDown size={18} />
-              </div>
-            </div>
-
-            <div className="field">
-              <label htmlFor="fullName">{t.fields.fullName}</label>
-              <input id="fullName" required value={form.fullName} onChange={(event) => update("fullName", event.target.value)} />
-            </div>
-            <div className="field">
-              <label htmlFor="phone">{t.fields.phone}</label>
-              <input id="phone" required inputMode="tel" value={form.phone} onChange={(event) => update("phone", event.target.value)} />
-            </div>
-            <div className="field">
-              <label htmlFor="email">{t.fields.email}</label>
-              <input id="email" required type="email" value={form.email} onChange={(event) => update("email", event.target.value)} />
-            </div>
-            <div className="field">
-              <label htmlFor="preferredContact">{t.fields.preferredContact}</label>
-              <div className="select-wrap">
-                <select id="preferredContact" value={form.preferredContact} onChange={(event) => update("preferredContact", event.target.value)}>
-                  {contactOptions.map(([value, label]) => (
-                    <option value={value} key={value}>
-                      {label}
-                    </option>
-                  ))}
-                </select>
-                <ChevronDown size={18} />
-              </div>
-            </div>
-            <div className="field">
-              <label htmlFor="city">{t.fields.city}</label>
-              <input id="city" value={form.city} onChange={(event) => update("city", event.target.value)} />
-            </div>
-            <div className="field split">
-              <div>
-                <label htmlFor="state">{t.fields.state}</label>
-                <div className="select-wrap">
-                  <select id="state" value={form.state} onChange={(event) => update("state", event.target.value)}>
-                    {states.map((state) => (
-                      <option value={state} key={state}>
-                        {state}
-                      </option>
-                    ))}
-                  </select>
-                  <ChevronDown size={18} />
+      <section className="guide-index" id="guides">
+        <div className="section-heading compact">
+          <span className="section-kicker">SEO guide hub</span>
+          <h2>{lang === "es" ? "Paginas por tema para resolver dudas" : "Topic pages built to answer real questions"}</h2>
+          <p>
+            {lang === "es"
+              ? "Cada categoria tiene una guia principal, FAQ, tipos de poliza y disponibilidad por comunidades hispanas."
+              : "Each category has a main guide, FAQ, policy type page, and availability page for Hispanic communities."}
+          </p>
+        </div>
+        <div className="guide-link-grid">
+          {services.map((service) => {
+            const paths = servicePaths(service);
+            return (
+              <article className="guide-link-card" key={service.id}>
+                <img src={service.image} alt={service[lang].title} />
+                <div>
+                  <h3>{service[lang].title}</h3>
+                  {Object.entries(paths).map(([type, href]) => {
+                    const Icon = pageTypeMeta[type].icon;
+                    return (
+                      <a href={href} onClick={(event) => navigate(event, href)} key={href}>
+                        <Icon size={16} />
+                        {pageTypeMeta[type][lang]}
+                      </a>
+                    );
+                  })}
                 </div>
+              </article>
+            );
+          })}
+        </div>
+      </section>
+
+      <StatesSection lang={lang} />
+      <AiSearchSection lang={lang} />
+    </>
+  );
+}
+
+function ServiceGrid({ lang, chooseService, navigate }) {
+  return (
+    <div className="service-grid">
+      {services.map((service) => {
+        const Icon = serviceIcons[service.id];
+        const local = service[lang];
+        const paths = servicePaths(service);
+        return (
+          <article className="service-card" key={service.id}>
+            <img src={service.image} alt={local.title} />
+            <div className="service-body">
+              <div className="service-icon">
+                <Icon size={22} />
               </div>
-              <div>
-                <label htmlFor="zipCode">{t.fields.zipCode}</label>
-                <input id="zipCode" inputMode="numeric" value={form.zipCode} onChange={(event) => update("zipCode", event.target.value)} />
+              <h3>{local.title}</h3>
+              <p>{local.summary}</p>
+              <ul>
+                {local.points.map((point) => (
+                  <li key={point}>
+                    <BadgeCheck size={15} />
+                    {point}
+                  </li>
+                ))}
+              </ul>
+              <div className="card-actions">
+                <a href={paths.guide} onClick={(event) => navigate(event, paths.guide)}>
+                  {languages[lang].readGuide}
+                  <ArrowRight size={16} />
+                </a>
+                <button type="button" onClick={() => chooseService(service.id)}>
+                  {languages[lang].useGuide}
+                </button>
               </div>
             </div>
-            <div className="field">
-              <label htmlFor="householdSize">{t.fields.householdSize}</label>
-              <input id="householdSize" inputMode="numeric" value={form.householdSize} onChange={(event) => update("householdSize", event.target.value)} />
-            </div>
-            <div className="field">
-              <label htmlFor="currentCoverage">{t.fields.currentCoverage}</label>
-              <input id="currentCoverage" value={form.currentCoverage} onChange={(event) => update("currentCoverage", event.target.value)} />
-            </div>
-            <div className="field wide">
-              <label htmlFor="message">{t.fields.message}</label>
-              <textarea id="message" rows="4" value={form.message} onChange={(event) => update("message", event.target.value)} />
-            </div>
-
-            <label className="consent">
-              <input type="checkbox" required checked={form.consent} onChange={(event) => update("consent", event.target.checked)} />
-              <span>{t.consent}</span>
-            </label>
-
-            <button className="primary form-submit" type="submit" disabled={status === "sending"}>
-              {status === "sending" ? t.sending : t.submit}
-              <ArrowRight size={18} />
-            </button>
-
-            {message && <p className={`form-message ${status}`}>{message}</p>}
-          </form>
-        </section>
-
-        <section className="final-band">
-          <Shield size={34} />
-          <h2>{t.finalCta}</h2>
-          <p>{t.finalText}</p>
-          <a className="primary" href="#lead-form">
-            {t.navCta}
-            <ArrowRight size={18} />
-          </a>
-        </section>
-      </main>
-
-      <footer>
-        <p>La Guía de Seguros</p>
-        <p>
-          <a href={`tel:${PHONE_TEL}`}>{PHONE_DISPLAY}</a> · <a href={WHATSAPP_URL}>WhatsApp</a> · <a href="https://chronoscodex.com/login">Agent Login</a>
-        </p>
-      </footer>
+          </article>
+        );
+      })}
     </div>
+  );
+}
+
+function ServicePage({ lang, route, chooseService, navigate }) {
+  const service = route.service;
+  const local = service[lang];
+  const Icon = serviceIcons[service.id];
+  const type = route.type;
+
+  return (
+    <>
+      <section className={`guide-hero guide-${service.color}`}>
+        <div className="guide-hero-copy">
+          <a href="/" onClick={(event) => navigate(event, "/")} className="breadcrumb">
+            {languages[lang].home}
+          </a>
+          <div className="eyebrow">
+            <Icon size={16} />
+            {pageTypeMeta[type][lang]}
+          </div>
+          <h1>{type === "guide" ? local.title : `${local.title}: ${pageTypeMeta[type][lang]}`}</h1>
+          <p>{type === "guide" ? local.description : introForType(type, lang, local)}</p>
+          <div className="hero-actions">
+            <a className="primary" href="#lead-form" onClick={() => chooseService(service.id)}>
+              {languages[lang].navCta}
+              <ArrowRight size={18} />
+            </a>
+            <a className="secondary" href={`tel:${site.phoneTel}`}>
+              <Phone size={18} />
+              {languages[lang].call}
+            </a>
+          </div>
+        </div>
+        <img className="guide-hero-img" src={service.image} alt={local.title} />
+      </section>
+
+      <GuideNav lang={lang} service={service} active={type} navigate={navigate} />
+
+      {type === "guide" && <MainGuide lang={lang} service={service} />}
+      {type === "faq" && <FaqPage lang={lang} service={service} />}
+      {type === "types" && <TypesPage lang={lang} service={service} />}
+      {type === "availability" && <AvailabilityPage lang={lang} service={service} />}
+    </>
+  );
+}
+
+function introForType(type, lang, local) {
+  if (type === "faq") return lang === "es" ? `Respuestas claras sobre ${local.title}, terminos, reclamos y cuando pedir ayuda.` : `Clear answers about ${local.title}, terms, claims, and when to ask for help.`;
+  if (type === "types") return lang === "es" ? `Compara tipos de polizas y usos comunes antes de elegir cobertura.` : `Compare policy types and common use cases before choosing coverage.`;
+  return lang === "es" ? `Disponibilidad y ejemplos para estados, condados y comunidades hispanas principales.` : `Availability and examples for major Hispanic hub states, counties, and communities.`;
+}
+
+function GuideNav({ lang, service, active, navigate }) {
+  const paths = servicePaths(service);
+  return (
+    <nav className="guide-tabs" aria-label={`${service[lang].title} pages`}>
+      {Object.entries(paths).map(([type, href]) => {
+        const Icon = pageTypeMeta[type].icon;
+        return (
+          <a className={active === type ? "active" : ""} href={href} onClick={(event) => navigate(event, href)} key={href}>
+            <Icon size={16} />
+            {pageTypeMeta[type][lang]}
+          </a>
+        );
+      })}
+    </nav>
+  );
+}
+
+function MainGuide({ lang, service }) {
+  const local = service[lang];
+  return (
+    <section className="guide-content">
+      <AnswerBlock title={languages[lang].quickAnswer} text={local.quick} />
+      <article className="prose-panel">
+        <h2>{lang === "es" ? "Por que importa esta cobertura" : "Why this coverage matters"}</h2>
+        <p>{local.intro}</p>
+      </article>
+      <SplitInfo lang={lang} local={local} />
+      <LocalExamples lang={lang} local={local} />
+    </section>
+  );
+}
+
+function SplitInfo({ lang, local }) {
+  return (
+    <div className="split-info">
+      <InfoList title={languages[lang].terminology} items={local.terms} />
+      <InfoList title={languages[lang].whenToCall} items={local.callAgent.map((item) => [item, ""])} />
+      <InfoList title={languages[lang].claimTitle} items={local.claim.map((item, index) => [`${index + 1}. ${item}`, ""])} />
+    </div>
+  );
+}
+
+function InfoList({ title, items }) {
+  return (
+    <article className="info-list">
+      <h2>{title}</h2>
+      <div>
+        {items.map(([term, text]) => (
+          <section key={term}>
+            <h3>{term}</h3>
+            {text && <p>{text}</p>}
+          </section>
+        ))}
+      </div>
+    </article>
+  );
+}
+
+function LocalExamples({ lang, local }) {
+  return (
+    <article className="prose-panel">
+      <h2>{languages[lang].examples}</h2>
+      <div className="example-grid">
+        {local.examples.map((item) => (
+          <p key={item}>{item}</p>
+        ))}
+      </div>
+    </article>
+  );
+}
+
+function FaqPage({ lang, service }) {
+  const local = service[lang];
+  return (
+    <section className="guide-content">
+      <AnswerBlock title={languages[lang].quickAnswer} text={local.quick} />
+      <div className="faq-list">
+        {local.faqs.map(([question, answer]) => (
+          <details open key={question}>
+            <summary>{question}</summary>
+            <p>{answer}</p>
+          </details>
+        ))}
+      </div>
+      <SplitInfo lang={lang} local={local} />
+    </section>
+  );
+}
+
+function TypesPage({ lang, service }) {
+  const local = service[lang];
+  return (
+    <section className="guide-content">
+      <AnswerBlock
+        title={lang === "es" ? "Como elegir un tipo de poliza" : "How to choose a policy type"}
+        text={lang === "es"
+          ? "El tipo correcto depende de quien usa la cobertura, donde vive, si hay negocio, que riesgos quieres transferir y cuanto puedes pagar de prima y deducible."
+          : "The right type depends on who uses the coverage, where they live, whether business use exists, what risks you want to transfer, and what premium and deductible you can afford."}
+      />
+      <div className="type-grid">
+        {local.policyTypes.map(([name, text]) => (
+          <article className="type-card" key={name}>
+            <Building2 size={22} />
+            <h2>{name}</h2>
+            <p>{text}</p>
+          </article>
+        ))}
+      </div>
+      <InfoList title={languages[lang].whenToCall} items={local.callAgent.map((item) => [item, ""])} />
+    </section>
+  );
+}
+
+function AvailabilityPage({ lang, service }) {
+  const local = service[lang];
+  return (
+    <section className="guide-content">
+      <AnswerBlock
+        title={languages[lang].serviceAreas}
+        text={lang === "es"
+          ? `${local.title} esta disponible para consulta bilingue en los principales hubs hispanos de Estados Unidos. Las opciones especificas dependen de estado, condado, carrier y elegibilidad.`
+          : `${local.title} bilingual consultation is available across major Hispanic hubs in the United States. Specific options depend on state, county, carrier, and eligibility.`}
+      />
+      <StatesSection lang={lang} compact />
+      <LocalExamples lang={lang} local={local} />
+      <Sources lang={lang} />
+    </section>
+  );
+}
+
+function AnswerBlock({ title, text }) {
+  return (
+    <article className="answer-block">
+      <span>{title}</span>
+      <p>{text}</p>
+    </article>
+  );
+}
+
+function StatesSection({ lang, compact = false }) {
+  const t = languages[lang];
+  return (
+    <section className={compact ? "states-section compact-state-list" : "states-section"} id="states">
+      {!compact && (
+        <div className="section-heading">
+          <span className="section-kicker">California - Texas - Florida - New York</span>
+          <h2>{t.sections.statesTitle}</h2>
+          <p>{t.sections.statesText}</p>
+        </div>
+      )}
+      <div className="state-grid">
+        {marketStates.map((item, index) => (
+          <article className="state-card" key={item.abbr}>
+            <strong>{index + 1}. {item.state}</strong>
+            <span>{item.hispanicPopulation} Hispanic residents</span>
+            <p>{item.counties.join(", ")}</p>
+            <small>{item.landmarks.slice(0, 4).join(" - ")}</small>
+          </article>
+        ))}
+      </div>
+    </section>
+  );
+}
+
+function AiSearchSection({ lang }) {
+  const t = languages[lang];
+  return (
+    <section className="ai-section">
+      <Globe2 size={30} />
+      <div>
+        <span className="section-kicker">AI-ready insurance answers</span>
+        <h2>{t.sections.aiTitle}</h2>
+        <p>{t.sections.aiText}</p>
+        <div className="ai-links">
+          <a href="/llms.txt">llms.txt</a>
+          <a href="/llms-full.txt">llms-full.txt</a>
+          <a href="/sitemap.xml">sitemap.xml</a>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function Sources({ lang }) {
+  return (
+    <article className="prose-panel sources">
+      <h2>{languages[lang].sources}</h2>
+      <p>{languages[lang].sourceText}</p>
+      {sourceLinks.map((link) => (
+        <a href={link.href} key={link.href} target="_blank" rel="noreferrer">
+          {link.label}
+        </a>
+      ))}
+    </article>
+  );
+}
+
+function LeadSection({ lang, form, status, message, update, handleSubmit, selectedService }) {
+  const t = languages[lang];
+  const SelectedIcon = serviceIcons[selectedService.id];
+  return (
+    <section className="lead-section" id="lead-form">
+      <div className="lead-copy">
+        <div className="selected-guide">
+          <SelectedIcon size={22} />
+          {selectedService[lang].title}
+        </div>
+        <h2>{t.formTitle}</h2>
+        <p>{t.formText}</p>
+        <p className="small-note">{t.formIntro}</p>
+        <div className="contact-strip">
+          <a href={`tel:${site.phoneTel}`}>
+            <Phone size={17} />
+            {site.phoneDisplay}
+          </a>
+          <a href={site.whatsapp} target="_blank" rel="noreferrer">
+            {t.whatsapp}
+          </a>
+        </div>
+      </div>
+
+      <form className="lead-form" onSubmit={handleSubmit}>
+        <label className="hidden-field">
+          Company
+          <input value={form.company} onChange={(event) => update("company", event.target.value)} tabIndex="-1" autoComplete="off" />
+        </label>
+
+        <div className="field wide">
+          <label htmlFor="insuranceType">{t.fields.insuranceType}</label>
+          <Select id="insuranceType" value={form.insuranceType} onChange={(value) => update("insuranceType", value)}>
+            {services.map((service) => (
+              <option value={service.id} key={service.id}>
+                {service[lang].title}
+              </option>
+            ))}
+          </Select>
+        </div>
+
+        <Field id="fullName" label={t.fields.fullName} required value={form.fullName} update={update} />
+        <Field id="phone" label={t.fields.phone} required value={form.phone} update={update} inputMode="tel" />
+        <Field id="email" label={t.fields.email} required value={form.email} update={update} type="email" />
+        <div className="field">
+          <label htmlFor="preferredContact">{t.fields.preferredContact}</label>
+          <Select id="preferredContact" value={form.preferredContact} onChange={(value) => update("preferredContact", value)}>
+            {contactOptions.map(([value, label]) => (
+              <option value={value} key={value}>{label}</option>
+            ))}
+          </Select>
+        </div>
+        <Field id="city" label={t.fields.city} value={form.city} update={update} />
+        <div className="field split">
+          <div>
+            <label htmlFor="state">{t.fields.state}</label>
+            <Select id="state" value={form.state} onChange={(value) => update("state", value)}>
+              {stateOptions.map((state) => (
+                <option value={state} key={state}>{state}</option>
+              ))}
+            </Select>
+          </div>
+          <Field id="zipCode" label={t.fields.zipCode} value={form.zipCode} update={update} inputMode="numeric" />
+        </div>
+        <Field id="householdSize" label={t.fields.householdSize} value={form.householdSize} update={update} inputMode="numeric" />
+        <Field id="currentCoverage" label={t.fields.currentCoverage} value={form.currentCoverage} update={update} />
+        <div className="field wide">
+          <label htmlFor="message">{t.fields.message}</label>
+          <textarea id="message" rows="4" value={form.message} onChange={(event) => update("message", event.target.value)} />
+        </div>
+
+        <label className="consent">
+          <input type="checkbox" required checked={form.consent} onChange={(event) => update("consent", event.target.checked)} />
+          <span>{t.consent}</span>
+        </label>
+
+        <button className="primary form-submit" type="submit" disabled={status === "sending"}>
+          {status === "sending" ? t.sending : t.submit}
+          <ArrowRight size={18} />
+        </button>
+
+        {message && <p className={`form-message ${status}`}>{message}</p>}
+      </form>
+    </section>
+  );
+}
+
+function Field({ id, label, value, update, required = false, type = "text", inputMode }) {
+  return (
+    <div className="field">
+      <label htmlFor={id}>{label}</label>
+      <input id={id} required={required} type={type} inputMode={inputMode} value={value} onChange={(event) => update(id, event.target.value)} />
+    </div>
+  );
+}
+
+function Select({ id, value, onChange, children }) {
+  return (
+    <div className="select-wrap">
+      <select id={id} value={value} onChange={(event) => onChange(event.target.value)}>
+        {children}
+      </select>
+      <ChevronDown size={18} />
+    </div>
+  );
+}
+
+function FinalBand({ lang }) {
+  const t = languages[lang];
+  return (
+    <section className="final-band">
+      <Shield size={34} />
+      <h2>{t.sections.finalTitle}</h2>
+      <p>{t.sections.finalText}</p>
+      <a className="primary" href="#lead-form">
+        {t.navCta}
+        <ArrowRight size={18} />
+      </a>
+    </section>
+  );
+}
+
+function Footer({ navigate }) {
+  const guideLinks = services.slice(0, 6).map((service) => [servicePaths(service).guide, service.en.title]);
+  return (
+    <footer>
+      <div>
+        <p>La Guía de Seguros</p>
+        <small>Powered by MLC Insurance Agency</small>
+      </div>
+      <div className="footer-links">
+        {guideLinks.map(([href, label]) => (
+          <a href={href} onClick={(event) => navigate(event, href)} key={href}>{label}</a>
+        ))}
+        <a href={site.chronos}>ChronosCodex</a>
+        <a href={site.chronosLogin}>Agent Login</a>
+        <a href={`tel:${site.phoneTel}`}>{site.phoneDisplay}</a>
+      </div>
+    </footer>
   );
 }
 

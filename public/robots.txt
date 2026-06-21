@@ -2,3 +2,4 @@ User-agent: *
 Allow: /
 
 Sitemap: https://laguiadeseguros.com/sitemap.xml
+LLMS: https://laguiadeseguros.com/llms.txt

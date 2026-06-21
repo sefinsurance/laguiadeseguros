@@ -5,5 +5,16 @@
   "display": "standalone",
   "background_color": "#f7fbf9",
   "theme_color": "#0f766e",
-  "icons": []
+  "icons": [
+    {
+      "src": "/favicon.png",
+      "sizes": "64x64",
+      "type": "image/png"
+    },
+    {
+      "src": "/apple-touch-icon.png",
+      "sizes": "180x180",
+      "type": "image/png"
+    }
+  ]
 }

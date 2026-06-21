@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" role="img" aria-labelledby="title desc">
+  <title id="title">La Guia de Seguros logo</title>
+  <desc id="desc">A shield with a compass checkmark, home roof, medical cross, and road motif for insurance guidance.</desc>
+  <defs>
+    <linearGradient id="shield" x1="50" x2="205" y1="30" y2="225" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#0f766e"/>
+      <stop offset="0.55" stop-color="#155e75"/>
+      <stop offset="1" stop-color="#0f172a"/>
+    </linearGradient>
+    <linearGradient id="gold" x1="78" x2="185" y1="69" y2="184" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#f8d16b"/>
+      <stop offset="1" stop-color="#d99a20"/>
+    </linearGradient>
+  </defs>
+  <path fill="url(#shield)" d="M128 14 45 45v74c0 52 33 98 83 123 50-25 83-71 83-123V45L128 14Z"/>
+  <path fill="#ffffff" fill-opacity=".16" d="M128 28 59 54v62c0 42 25 80 69 103 44-23 69-61 69-103V54l-69-26Z"/>
+  <path fill="#f8fafc" d="M128 48 69 70v49c0 37 22 68 59 88 37-20 59-51 59-88V70l-59-22Z"/>
+  <path fill="#0f766e" d="M82 116h13v52H82zM161 116h13v52h-13zM95 109l33-29 33 29v10H95z"/>
+  <path fill="#155e75" d="M102 116h52v52h-52z"/>
+  <path fill="#f8fafc" d="M120 130h16v38h-16z"/>
+  <path fill="#f8fafc" d="M127 88 89 121h12l27-23 27 23h12z"/>
+  <path fill="#e11d48" d="M142 75h14v13h13v14h-13v13h-14v-13h-13V88h13z"/>
+  <path fill="#0f172a" fill-opacity=".2" d="M68 170c18 20 38 36 60 47 22-11 42-27 60-47H68Z"/>
+  <path fill="none" stroke="url(#gold)" stroke-linecap="round" stroke-linejoin="round" stroke-width="18" d="m77 154 33 28 70-86"/>
+  <path fill="none" stroke="#f8fafc" stroke-linecap="round" stroke-linejoin="round" stroke-width="7" d="m77 154 33 28 70-86"/>
+  <path fill="#f8fafc" d="M64 83a7 7 0 1 0 0-14 7 7 0 0 0 0 14ZM192 83a7 7 0 1 0 0-14 7 7 0 0 0 0 14Z"/>
+</svg>

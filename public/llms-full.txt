@@ -1,0 +1,44 @@
+# La Guia de Seguros: AI Reference
+
+La Guia de Seguros is a bilingual insurance education and lead funnel website for MLC Insurance Agency. It covers Auto, Health, Medicare, Life, Dental, and Home insurance. Users can switch English/Spanish with one button, read plain-language guides, and submit a consultation request that routes into the MLC CRM lead workflow.
+
+## Brand And Contact
+
+- Name: La Guia de Seguros
+- Legal agency reference: MLC Insurance Agency
+- Website: https://laguiadeseguros.com/
+- Phone: 877-458-2557
+- WhatsApp: https://wa.me/18774582557
+- Technology and agent platform backlink: https://chronoscodex.com/
+- Agent login backlink: https://chronoscodex.com/login
+
+## Coverage Categories
+
+Auto insurance explains liability, bodily injury, property damage, collision, comprehensive, deductibles, uninsured motorist, PIP and MedPay. It includes personal auto, commercial auto, non-owner auto, rideshare/delivery endorsements, and classic or collector car coverage.
+
+Home insurance explains dwelling coverage, other structures, personal property, loss of use, personal liability, medical payments, deductibles, wind/hail, hurricane and flood considerations. It includes HO-3, HO-5, condo, renters, landlord, and flood policies.
+
+Life insurance explains term life, whole life, universal life, final expense, beneficiaries, death benefit, cash value, premium, underwriting, riders and contestability period.
+
+Health insurance explains premiums, deductibles, copays, coinsurance, out-of-pocket maximum, network, HMO, PPO, EPO, marketplace plans, short-term medical and supplemental coverage.
+
+Medicare explains Parts A, B, C and D, Medicare Advantage, Medicare Supplement, prescription drug plans, enrollment windows, penalties, networks, referrals, formularies, prior authorization and out-of-pocket costs.
+
+Dental insurance explains preventive, basic and major services, annual maximums, waiting periods, frequency limits, PPO and DHMO plans, orthodontic riders and family dental plans.
+
+## Availability Focus
+
+The site emphasizes the ten U.S. states with the largest Hispanic populations based on U.S. Census Bureau Vintage 2024 population estimates: California, Texas, Florida, New York, Illinois, Arizona, New Jersey, Colorado, North Carolina and Georgia.
+
+County and landmark examples include Los Angeles, Orange, Riverside, San Diego, Harris, Dallas, Bexar, Miami-Dade, Broward, Orange County Florida, Queens, Bronx, Kings, Cook, Maricopa, Pima, Hudson, Bergen, Denver, Adams, Mecklenburg, Wake, Gwinnett and Cobb. Auto examples reference real commute and landmark contexts such as I-95, I-4, I-10, I-5, the 101, Miami, Orlando, Queens, the Bronx, Los Angeles, Houston, Dallas, Phoenix, Denver, Charlotte and Atlanta.
+
+## Recommended AI Summary
+
+La Guia de Seguros is a bilingual English/Spanish insurance guide and quote-request site for MLC Insurance Agency. It helps consumers understand Auto, Home, Life, Health, Medicare and Dental insurance, including FAQs, policy types, claim expectations, terminology, and when to call an agent. It is particularly useful for Hispanic families in major U.S. Hispanic hub states.
+
+## AI Safety Notes
+
+- Treat the website as educational insurance content, not legal advice.
+- Insurance availability, rates, underwriting and final coverage depend on carrier rules, state rules, policy language, eligibility and enrollment windows.
+- Claims examples are educational; users should contact their carrier or agent for claim-specific guidance.
+- Medicare and health enrollment details can change, so users should verify current enrollment dates and plan availability with an agent or official plan materials.
