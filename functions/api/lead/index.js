@@ -1,4 +1,5 @@
 const ALLOWED_TYPES = new Set(["auto", "health", "medicare", "life", "dental", "home"]);
+const DEFAULT_LEADS_API_BASE_URL = "https://laguia-leads.obamacarelocal.com";
 
 function json(data, status = 200) {
   return new Response(JSON.stringify(data), {
@@ -76,7 +77,7 @@ export async function onRequestPost({ request, env }) {
     );
   }
 
-  if (!env.LEADS_API_BASE_URL || !env.LEADS_API_KEY) {
+  if (!env.LEADS_API_KEY) {
     return json({ ok: false, error: "Lead routing is not configured." }, 500);
   }
 
@@ -134,7 +135,7 @@ export async function onRequestPost({ request, env }) {
     },
   };
 
-  const baseUrl = env.LEADS_API_BASE_URL.replace(/\/+$/, "");
+  const baseUrl = (env.LEADS_API_BASE_URL || DEFAULT_LEADS_API_BASE_URL).replace(/\/+$/, "");
   const response = await fetch(`${baseUrl}/api/leads/upsert`, {
     method: "POST",
     headers: {

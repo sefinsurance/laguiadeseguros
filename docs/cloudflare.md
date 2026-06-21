@@ -11,7 +11,7 @@ Recommended Pages configuration:
 
 Runtime variables:
 
-- `LEADS_API_BASE_URL`: `https://laguia-leads.obamacarelocal.com`
+- `LEADS_API_BASE_URL`: `https://laguia-leads.obamacarelocal.com` (optional because the Function has this production default)
 - `LEADS_API_KEY`: secret API key for the MLC leads service
 - `SITE_ORIGIN`: `https://laguiadeseguros.com`
 

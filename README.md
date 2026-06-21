@@ -27,7 +27,7 @@ node --check functions/api/lead/index.js
 
 Set these in Cloudflare Pages production variables/secrets:
 
-- `LEADS_API_BASE_URL` (`https://laguia-leads.obamacarelocal.com`)
+- `LEADS_API_BASE_URL` (`https://laguia-leads.obamacarelocal.com`, optional because the Function has this production default)
 - `LEADS_API_KEY`
 - `SITE_ORIGIN=https://laguiadeseguros.com`
 
