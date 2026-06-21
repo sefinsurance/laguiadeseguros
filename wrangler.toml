@@ -1,0 +1,6 @@
+name = "laguiadeseguros"
+compatibility_date = "2026-06-21"
+pages_build_output_dir = "dist"
+
+[vars]
+SITE_ORIGIN = "https://laguiadeseguros.com"

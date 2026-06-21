@@ -1,0 +1,9 @@
+{
+  "name": "La Guia de Seguros",
+  "short_name": "Guia Seguros",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#f7fbf9",
+  "theme_color": "#0f766e",
+  "icons": []
+}

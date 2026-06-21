@@ -1,0 +1,24 @@
+{
+  "name": "laguiadeseguros",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite --host 0.0.0.0",
+    "build": "vite build",
+    "preview": "vite preview --host 0.0.0.0",
+    "check": "vite build && node --check functions/api/lead/index.js",
+    "deploy": "wrangler pages deploy dist --project-name laguiadeseguros"
+  },
+  "dependencies": {
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "lucide-react": "^0.475.0"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^4.3.4",
+    "typescript": "^5.8.2",
+    "vite": "^6.1.0",
+    "wrangler": "^4.103.0"
+  }
+}
