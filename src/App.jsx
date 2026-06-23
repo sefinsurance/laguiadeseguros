@@ -157,9 +157,13 @@ function useSeo(route, lang) {
         : route.type === "faq"
           ? `${local.title} FAQ: ${local.faqs.map(([q]) => q).slice(0, 3).join(", ")}.`
           : route.type === "types"
-            ? `${local.title} policy types explained in English and Spanish: ${local.policyTypes.map(([name]) => name).join(", ")}.`
+            ? lang === "es"
+              ? `${local.title}: tipos de poliza explicados en espanol e ingles: ${local.policyTypes.map(([name]) => name).join(", ")}.`
+              : `${local.title} policy types explained in English and Spanish: ${local.policyTypes.map(([name]) => name).join(", ")}.`
             : route.type === "availability"
-              ? `${local.title} availability guidance for Hispanic hub states and counties including ${marketStates.slice(0, 4).map((s) => s.state).join(", ")}.`
+              ? lang === "es"
+                ? `${local.title}: disponibilidad y ejemplos para estados y condados hispanos principales, incluyendo ${marketStates.slice(0, 4).map((s) => s.state).join(", ")}.`
+                : `${local.title} availability guidance for Hispanic hub states and counties including ${marketStates.slice(0, 4).map((s) => s.state).join(", ")}.`
               : local.description;
 
     const canonical = pageUrl(route.path);
@@ -255,10 +259,11 @@ function App() {
   const t = languages[lang];
 
   useEffect(() => {
+    document.documentElement.lang = lang === "es" ? "es-US" : "en-US";
     const onPop = () => setRoute(routeForPath(window.location.pathname));
     window.addEventListener("popstate", onPop);
     return () => window.removeEventListener("popstate", onPop);
-  }, []);
+  }, [lang]);
 
   useEffect(() => {
     if (!route.service) return;
@@ -352,7 +357,7 @@ function App() {
         />
         <FinalBand lang={lang} />
       </main>
-      <Footer navigate={navigate} />
+      <Footer lang={lang} navigate={navigate} />
     </div>
   );
 }
@@ -375,7 +380,7 @@ function Header({ lang, setLang, menuOpen, setMenuOpen, navigate }) {
         </span>
       </a>
 
-      <nav className="desktop-nav" aria-label="Main navigation">
+      <nav className="desktop-nav" aria-label={t.mainNavigation}>
         {navItems.map(([href, label]) => (
           <a href={href} key={href}>{label}</a>
         ))}
@@ -393,21 +398,21 @@ function Header({ lang, setLang, menuOpen, setMenuOpen, navigate }) {
         <a className="primary small" href="#lead-form">
           {t.navCta}
         </a>
-        <button className="menu-button" type="button" onClick={() => setMenuOpen(true)} aria-label="Open menu">
+        <button className="menu-button" type="button" onClick={() => setMenuOpen(true)} aria-label={t.openMenu}>
           <Menu size={22} />
         </button>
       </div>
 
       {menuOpen && (
         <div className="mobile-menu" role="dialog" aria-modal="true">
-          <button className="menu-close" type="button" onClick={() => setMenuOpen(false)} aria-label="Close menu">
+          <button className="menu-close" type="button" onClick={() => setMenuOpen(false)} aria-label={t.closeMenu}>
             <X size={22} />
           </button>
           {navItems.map(([href, label]) => (
             <a key={href} onClick={() => setMenuOpen(false)} href={href}>{label}</a>
           ))}
           <a onClick={() => setMenuOpen(false)} href={`tel:${site.phoneTel}`}>{site.phoneDisplay}</a>
-          <a onClick={() => setMenuOpen(false)} href={site.chronosLogin}>Agent Login</a>
+          <a onClick={() => setMenuOpen(false)} href={site.chronosLogin}>{t.agentLogin}</a>
         </div>
       )}
     </header>
@@ -454,7 +459,7 @@ function HomePage({ lang, chooseService, navigate }) {
 
       <section className="coverage-band" id="coverage">
         <div className="section-heading">
-          <span className="section-kicker">Auto - Health - Medicare - Life - Dental - Home</span>
+          <span className="section-kicker">{t.coverageKicker}</span>
           <h2>{t.sections.coverageTitle}</h2>
           <p>{t.sections.coverageText}</p>
         </div>
@@ -463,13 +468,9 @@ function HomePage({ lang, chooseService, navigate }) {
 
       <section className="guide-index" id="guides">
         <div className="section-heading compact">
-          <span className="section-kicker">SEO guide hub</span>
-          <h2>{lang === "es" ? "Paginas por tema para resolver dudas" : "Topic pages built to answer real questions"}</h2>
-          <p>
-            {lang === "es"
-              ? "Cada categoria tiene una guia principal, FAQ, tipos de poliza y disponibilidad por comunidades hispanas."
-              : "Each category has a main guide, FAQ, policy type page, and availability page for Hispanic communities."}
-          </p>
+          <span className="section-kicker">{t.guideHubKicker}</span>
+          <h2>{t.guideHubTitle}</h2>
+          <p>{t.guideHubText}</p>
         </div>
         <div className="guide-link-grid">
           {services.map((service) => {
@@ -614,7 +615,7 @@ function MainGuide({ lang, service }) {
     <section className="guide-content">
       <AnswerBlock title={languages[lang].quickAnswer} text={local.quick} />
       <article className="prose-panel">
-        <h2>{lang === "es" ? "Por que importa esta cobertura" : "Why this coverage matters"}</h2>
+        <h2>{languages[lang].whyCoverageMatters}</h2>
         <p>{local.intro}</p>
       </article>
       <SplitInfo lang={lang} local={local} />
@@ -685,10 +686,8 @@ function TypesPage({ lang, service }) {
   return (
     <section className="guide-content">
       <AnswerBlock
-        title={lang === "es" ? "Como elegir un tipo de poliza" : "How to choose a policy type"}
-        text={lang === "es"
-          ? "El tipo correcto depende de quien usa la cobertura, donde vive, si hay negocio, que riesgos quieres transferir y cuanto puedes pagar de prima y deducible."
-          : "The right type depends on who uses the coverage, where they live, whether business use exists, what risks you want to transfer, and what premium and deductible you can afford."}
+        title={languages[lang].choosePolicyType}
+        text={languages[lang].choosePolicyText}
       />
       <div className="type-grid">
         {local.policyTypes.map(([name, text]) => (
@@ -736,7 +735,7 @@ function StatesSection({ lang, compact = false }) {
     <section className={compact ? "states-section compact-state-list" : "states-section"} id="states">
       {!compact && (
         <div className="section-heading">
-          <span className="section-kicker">California - Texas - Florida - New York</span>
+          <span className="section-kicker">{t.statesKicker}</span>
           <h2>{t.sections.statesTitle}</h2>
           <p>{t.sections.statesText}</p>
         </div>
@@ -745,7 +744,7 @@ function StatesSection({ lang, compact = false }) {
         {marketStates.map((item, index) => (
           <article className="state-card" key={item.abbr}>
             <strong>{index + 1}. {item.state}</strong>
-            <span>{item.hispanicPopulation} Hispanic residents</span>
+            <span>{item.hispanicPopulation} {t.hispanicResidents}</span>
             <p>{item.counties.join(", ")}</p>
             <small>{item.landmarks.slice(0, 4).join(" - ")}</small>
           </article>
@@ -761,7 +760,7 @@ function AiSearchSection({ lang }) {
     <section className="ai-section">
       <Globe2 size={30} />
       <div>
-        <span className="section-kicker">AI-ready insurance answers</span>
+        <span className="section-kicker">{t.aiKicker}</span>
         <h2>{t.sections.aiTitle}</h2>
         <p>{t.sections.aiText}</p>
         <div className="ai-links">
@@ -781,7 +780,7 @@ function Sources({ lang }) {
       <p>{languages[lang].sourceText}</p>
       {sourceLinks.map((link) => (
         <a href={link.href} key={link.href} target="_blank" rel="noreferrer">
-          {link.label}
+          {link.label[lang]}
         </a>
       ))}
     </article>
@@ -814,7 +813,7 @@ function LeadSection({ lang, form, status, message, update, handleSubmit, select
 
       <form className="lead-form" onSubmit={handleSubmit}>
         <label className="hidden-field">
-          Company
+          {t.honeypot}
           <input value={form.company} onChange={(event) => update("company", event.target.value)} tabIndex="-1" autoComplete="off" />
         </label>
 
@@ -835,8 +834,8 @@ function LeadSection({ lang, form, status, message, update, handleSubmit, select
         <div className="field">
           <label htmlFor="preferredContact">{t.fields.preferredContact}</label>
           <Select id="preferredContact" value={form.preferredContact} onChange={(value) => update("preferredContact", value)}>
-            {contactOptions.map(([value, label]) => (
-              <option value={value} key={value}>{label}</option>
+            {contactOptions.map((value) => (
+              <option value={value} key={value}>{t.contactOptions[value]}</option>
             ))}
           </Select>
         </div>
@@ -846,7 +845,7 @@ function LeadSection({ lang, form, status, message, update, handleSubmit, select
             <label htmlFor="state">{t.fields.state}</label>
             <Select id="state" value={form.state} onChange={(value) => update("state", value)}>
               {stateOptions.map((state) => (
-                <option value={state} key={state}>{state}</option>
+                <option value={state} key={state}>{t.stateLabels[state] || state}</option>
               ))}
             </Select>
           </div>
@@ -910,20 +909,21 @@ function FinalBand({ lang }) {
   );
 }
 
-function Footer({ navigate }) {
-  const guideLinks = services.slice(0, 6).map((service) => [servicePaths(service).guide, service.en.title]);
+function Footer({ lang, navigate }) {
+  const t = languages[lang];
+  const guideLinks = services.slice(0, 6).map((service) => [servicePaths(service).guide, service[lang].title]);
   return (
     <footer>
       <div>
         <p>La Guía de Seguros</p>
-        <small>Powered by MLC Insurance Agency</small>
+        <small>{t.poweredBy}</small>
       </div>
       <div className="footer-links">
         {guideLinks.map(([href, label]) => (
           <a href={href} onClick={(event) => navigate(event, href)} key={href}>{label}</a>
         ))}
         <a href={site.chronos}>ChronosCodex</a>
-        <a href={site.chronosLogin}>Agent Login</a>
+        <a href={site.chronosLogin}>{t.agentLogin}</a>
         <a href={`tel:${site.phoneTel}`}>{site.phoneDisplay}</a>
       </div>
     </footer>

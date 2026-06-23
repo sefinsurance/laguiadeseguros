@@ -17,6 +17,12 @@ export const languages = {
     navCta: "Cotizar ahora",
     call: "Llamar ahora",
     whatsapp: "WhatsApp",
+    agentLogin: "Portal de agentes",
+    poweredBy: "Impulsado por MLC Insurance Agency",
+    mainNavigation: "Navegacion principal",
+    openMenu: "Abrir menu",
+    closeMenu: "Cerrar menu",
+    honeypot: "Empresa",
     home: "Inicio",
     guide: "Guia",
     readGuide: "Leer guia",
@@ -28,6 +34,18 @@ export const languages = {
     faq: "Preguntas frecuentes",
     examples: "Ejemplos locales",
     serviceAreas: "Estados y comunidades donde ayudamos",
+    coverageKicker: "Auto - Salud - Medicare - Vida - Dental - Hogar",
+    guideHubKicker: "Centro SEO de guias",
+    guideHubTitle: "Paginas por tema para resolver dudas",
+    guideHubText:
+      "Cada categoria tiene una guia principal, FAQ, tipos de poliza y disponibilidad por comunidades hispanas.",
+    whyCoverageMatters: "Por que importa esta cobertura",
+    choosePolicyType: "Como elegir un tipo de poliza",
+    choosePolicyText:
+      "El tipo correcto depende de quien usa la cobertura, donde vive, si hay negocio, que riesgos quieres transferir y cuanto puedes pagar de prima y deducible.",
+    statesKicker: "California - Texas - Florida - Nueva York",
+    hispanicResidents: "residentes hispanos",
+    aiKicker: "Respuestas de seguros listas para IA",
     sources: "Fuentes y transparencia",
     sourceText:
       "La orientacion de disponibilidad geografica usa estimados de poblacion Vintage 2024 del U.S. Census Bureau. Los ejemplos son educativos; las coberturas finales dependen de la compania, el estado, la poliza y las reglas de elegibilidad.",
@@ -52,6 +70,15 @@ export const languages = {
       householdSize: "Personas en el hogar",
       currentCoverage: "Cobertura actual",
       message: "Que necesitas resolver?",
+    },
+    contactOptions: {
+      phone: "Telefono",
+      sms: "SMS",
+      whatsapp: "WhatsApp",
+      email: "Email",
+    },
+    stateLabels: {
+      Other: "Otro",
     },
     hero: {
       badge: "Guia bilingue de seguros",
@@ -83,6 +110,12 @@ export const languages = {
     navCta: "Start quote",
     call: "Call now",
     whatsapp: "WhatsApp",
+    agentLogin: "Agent login",
+    poweredBy: "Powered by MLC Insurance Agency",
+    mainNavigation: "Main navigation",
+    openMenu: "Open menu",
+    closeMenu: "Close menu",
+    honeypot: "Company",
     home: "Home",
     guide: "Guide",
     readGuide: "Read guide",
@@ -94,6 +127,18 @@ export const languages = {
     faq: "Frequently asked questions",
     examples: "Local examples",
     serviceAreas: "States and communities we serve",
+    coverageKicker: "Auto - Health - Medicare - Life - Dental - Home",
+    guideHubKicker: "SEO guide hub",
+    guideHubTitle: "Topic pages built to answer real questions",
+    guideHubText:
+      "Each category has a main guide, FAQ, policy type page, and availability page for Hispanic communities.",
+    whyCoverageMatters: "Why this coverage matters",
+    choosePolicyType: "How to choose a policy type",
+    choosePolicyText:
+      "The right type depends on who uses the coverage, where they live, whether business use exists, what risks you want to transfer, and what premium and deductible you can afford.",
+    statesKicker: "California - Texas - Florida - New York",
+    hispanicResidents: "Hispanic residents",
+    aiKicker: "AI-ready insurance answers",
     sources: "Sources and transparency",
     sourceText:
       "Geographic availability guidance uses U.S. Census Bureau Vintage 2024 population estimates. Examples are educational; final coverage depends on the carrier, state, policy language, and eligibility rules.",
@@ -118,6 +163,15 @@ export const languages = {
       householdSize: "Household size",
       currentCoverage: "Current coverage",
       message: "What do you need help with?",
+    },
+    contactOptions: {
+      phone: "Phone",
+      sms: "SMS",
+      whatsapp: "WhatsApp",
+      email: "Email",
+    },
+    stateLabels: {
+      Other: "Other",
     },
     hero: {
       badge: "Bilingual insurance guide",
@@ -850,22 +904,23 @@ export const marketStates = [
   },
 ];
 
-export const contactOptions = [
-  ["phone", "Phone / Llamada"],
-  ["sms", "SMS"],
-  ["whatsapp", "WhatsApp"],
-  ["email", "Email"],
-];
+export const contactOptions = ["phone", "sms", "whatsapp", "email"];
 
 export const stateOptions = ["CA", "TX", "FL", "NY", "IL", "AZ", "NJ", "CO", "NC", "GA", "Other"];
 
 export const sourceLinks = [
   {
-    label: "U.S. Census Bureau Vintage 2024 state population characteristics",
+    label: {
+      es: "U.S. Census Bureau: caracteristicas de poblacion estatal Vintage 2024",
+      en: "U.S. Census Bureau Vintage 2024 state population characteristics",
+    },
     href: "https://www.census.gov/data/tables/time-series/demo/popest/2020s-state-detail.html",
   },
   {
-    label: "U.S. Census Bureau Vintage 2024 county population characteristics",
+    label: {
+      es: "U.S. Census Bureau: caracteristicas de poblacion por condado Vintage 2024",
+      en: "U.S. Census Bureau Vintage 2024 county population characteristics",
+    },
     href: "https://www.census.gov/data/tables/time-series/demo/popest/2020s-counties-detail.html",
   },
 ];
